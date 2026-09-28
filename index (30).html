@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!--
+  NORTHLIGHT — single-file magazine template
+  HOW TO SPLIT LATER:
+    1. Everything inside the style tag              -> style.css   (link with <link rel="stylesheet" href="style.css">)
+    2. Everything inside the main script tag         -> app.js      (load with a script tag: src="app.js" defer)
+       Inside it, sections are marked "##### n. NAME #####":
+       1 SITE + ADS config · 2 DATA (posts) · 3 helpers · 4 pages · 5 search · 6 boot
+    3. The <svg> sprite (icons) can move to icons.svg or stay in the HTML.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Northlight — Magazine</title>
+<meta name="description" content="Northlight is an independent magazine about technology, design, travel, lifestyle, culture and business.">
+<meta name="theme-color" content="#5b4bff">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Northlight"><meta property="og:title" content="Northlight — Magazine"><meta property="og:description" content="Stories on technology, design, travel, lifestyle, culture and business.">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json" id="ld"></script>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27><rect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%235b4bff%27/><path d=%27M9 23V9l14 14V9%27 stroke=%27white%27 stroke-width=%273%27 fill=%27none%27/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f3f4fa;--card:#fff;--ink:#171a2c;--mute:#646a86;--line:#e2e4f0;--ac:#5b4bff;--ac2:#ff5d8f;--hl:#fff1a8;--r:18px;--f:'Plus Jakarta Sans',system-ui,sans-serif;--s:'Lora',Georgia,serif}
+[data-t=dark]{--bg:#0e0f1f;--card:#181a30;--ink:#eceefb;--mute:#9a9fc0;--line:#2a2c4a;--ac:#8b7fff;--ac2:#ff7aa5;--hl:#5b4b00}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 var(--f)}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.i{width:1.25em;height:1.25em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none;vertical-align:-.25em}
+.w{max-width:1140px;margin:0 auto;padding:0 18px}
+#prog{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));z-index:60}
+header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top)}
+.bar{display:flex;align-items:center;gap:12px;height:64px}
+.logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:22px;letter-spacing:-.03em}
+.mk{width:32px;height:32px;border-radius:9px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:grid;place-items:center;color:#fff}
+.nav{display:flex;gap:2px;margin-left:10px}.nav a{padding:8px 13px;border-radius:99px;font-weight:600;font-size:14px;color:var(--mute)}
+.nav a:hover,.nav a.on{background:var(--bg);color:var(--ink)}
+.sp{flex:1}
+.sbtn{display:flex;align-items:center;gap:10px;height:40px;padding:0 14px;min-width:240px;border-radius:99px;border:1px solid var(--line);background:var(--bg);color:var(--mute);font-size:14px}
+.sbtn kbd{margin-left:auto;font:600 11px var(--f);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.ib{width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:var(--bg);display:grid;place-items:center}
+.sun{display:none}[data-t=dark] .sun{display:block}[data-t=dark] .moon{display:none}
+main{padding:24px 0 96px;min-height:75vh}
+.h2{display:flex;align-items:center;justify-content:space-between;margin:36px 0 16px}
+.h2 h2{margin:0;font-size:21px;font-weight:800;letter-spacing:-.02em}.h2 a{font-size:14px;font-weight:700;color:var(--ac);display:flex;align-items:center;gap:4px}
+.art{position:relative;overflow:hidden;display:grid;place-items:center;color:#ffffffd9}
+.art svg{width:46%;height:46%;stroke-width:1.2;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;z-index:1}
+.art::before,.art::after{content:"";position:absolute;border-radius:50%;background:#ffffff26}
+.art::before{width:70%;aspect-ratio:1;left:-15%;top:-30%}.art::after{width:50%;aspect-ratio:1;right:-10%;bottom:-25%}
+.badge{display:inline-block;font-size:12px;font-weight:700;color:#fff;padding:3px 11px;border-radius:99px}
+.meta{font-size:13px;color:var(--mute);display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px}.meta span{display:inline-flex;align-items:center;gap:4px}
+.sl{position:relative;border-radius:24px;overflow:hidden;height:420px;background:#111}
+.sd{position:absolute;inset:0;opacity:0;transition:opacity .6s;display:flex;align-items:flex-end;pointer-events:none}
+.sd.on{opacity:1;pointer-events:auto}.sd .art{position:absolute;inset:0}.sd .art svg{width:30%;height:30%;transform:translate(28%,-8%)}
+.tx{position:relative;padding:30px;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.75));width:100%;display:flex;flex-direction:column;gap:10px}
+.tx h1{margin:0;font-size:clamp(24px,4vw,38px);line-height:1.1;letter-spacing:-.025em;max-width:640px}.tx .meta{color:#ffffffcc}
+.dots{position:absolute;right:20px;top:18px;display:flex;gap:6px;z-index:2}
+.dots button{width:9px;height:9px;border-radius:9px;border:0;background:#fff7;padding:0;transition:width .3s}.dots button.on{background:#fff;width:24px}
+.two{display:grid;grid-template-columns:1fr 330px;gap:28px;align-items:start}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}.g3{grid-template-columns:repeat(3,1fr)}
+.card{background:var(--card);border-radius:var(--r);overflow:hidden;border:1px solid var(--line);display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 28px -14px #1a1a4a55}
+.card .art{aspect-ratio:16/10}.card .b{padding:16px;display:flex;flex-direction:column;gap:9px;flex:1}
+.card h3{margin:0;font-size:18px;line-height:1.25}.card p{margin:0;font-size:14.5px;color:var(--mute)}
+.row{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.row .art{width:78px;height:78px;border-radius:14px;flex:none}.row h4{margin:2px 0 4px;font-size:15px;line-height:1.3}
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin-bottom:20px}.box h3{margin:0 0 8px;font-size:17px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chips a{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:99px;background:var(--bg);border:1px solid var(--line);font-size:13px;font-weight:600}
+.chips a:hover{border-color:var(--ac);color:var(--ac)}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ct{border-radius:var(--r);padding:20px;color:#fff;font-weight:800;min-height:118px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.ct .i{width:34px;height:34px}.ct small{font-weight:600;opacity:.85}
+.more{display:block;margin:24px auto 0;padding:12px 30px;border-radius:99px;border:0;background:var(--ac);color:#fff;font-weight:700}
+.pg h1{margin:6px 0;font-size:clamp(26px,4vw,34px);letter-spacing:-.025em}
+.crumb{font-size:13px;color:var(--mute)}.crumb a{color:var(--ac);font-weight:600}
+.post{max-width:740px;margin:0 auto}.post .hd{border-radius:24px;aspect-ratio:16/8;margin:18px 0 26px}
+.post h1{font-size:clamp(28px,5vw,44px);line-height:1.1;letter-spacing:-.03em;margin:12px 0}
+.bd p{font:19px/1.8 var(--s);margin:0 0 1.3em}
+.au{display:flex;gap:14px;align-items:center}.av{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;display:grid;place-items:center;font-weight:800}
+.sh{display:flex;gap:8px;margin:22px 0}.sh button{display:flex;gap:7px;align-items:center;padding:8px 16px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-weight:600;font-size:13px}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ac);color:#fff;padding:10px 16px;border-radius:10px;z-index:100;font-weight:700}.skip:focus{top:10px}
+main:focus{outline:0}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}.art.has-img::before,.art.has-img::after{display:none}
+.nav a[aria-current=page]{background:var(--bg);color:var(--ink)}
+.flinks{display:flex;gap:16px;flex-wrap:wrap}.flinks a:hover{color:var(--ac)}
+.page{max-width:720px;margin:0 auto}.page h1{font-size:clamp(28px,5vw,40px);letter-spacing:-.03em;margin:8px 0 14px}
+.page h2{font-size:20px;margin:28px 0 8px}.page p,.page li{font:18px/1.75 var(--s)}
+.fm{display:grid;gap:12px;margin-top:16px}.fm input,.fm textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:inherit;font:16px var(--f)}
+.fm textarea{min-height:130px;resize:vertical}
+mark{background:var(--hl);color:inherit;border-radius:3px;padding:0 1px}
+footer{background:var(--card);border-top:1px solid var(--line);padding:30px 0 96px;color:var(--mute);font-size:14px}
+footer .w{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+/* search overlay */
+#so{position:fixed;inset:0;z-index:70;background:#0a0b1aa6;backdrop-filter:blur(4px);display:none;align-items:flex-start;justify-content:center;padding:6vh 14px 0}
+#so.on{display:flex}
+.sm{width:100%;max-width:680px;max-height:86vh;background:var(--card);border-radius:22px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 30px 80px -20px #000a}
+.si{display:flex;align-items:center;gap:12px;padding:0 18px;height:62px;border-bottom:1px solid var(--line)}
+.si input{flex:1;border:0;background:none;outline:0;color:inherit;font:600 17px var(--f);min-width:0}
+.si button{border:0;background:var(--bg);border-radius:8px;padding:5px 10px;font-size:12px;font-weight:700;color:var(--mute)}
+.sr{overflow-y:auto;padding:8px 10px 14px}
+.sg{font-size:12px;font-weight:700;color:var(--mute);padding:12px 10px 6px}
+.hit{display:flex;gap:12px;padding:10px;border-radius:14px;align-items:flex-start}
+.hit:hover,.hit.sel{background:var(--bg)}.hit .art{width:52px;height:52px;border-radius:12px;flex:none}
+.hit .art svg{width:55%;height:55%}.hit b{display:block;font-size:15px;line-height:1.3}
+.hit q{display:block;quotes:none;font:14px/1.5 var(--s);color:var(--mute);margin-top:3px}
+.hit .why{font-size:11.5px;font-weight:700;color:var(--ac);display:flex;align-items:center;gap:4px;margin-top:4px}
+.sc{display:flex;flex-wrap:wrap;gap:8px;padding:2px 10px}.sc a{display:inline-flex;gap:6px;align-items:center;padding:7px 13px;border-radius:99px;border:1px solid var(--line);font-size:13px;font-weight:600}
+.sc a:hover{border-color:var(--ac);color:var(--ac)}
+.none{padding:34px 16px;text-align:center;color:var(--mute)}
+/* bottom nav */
+.bn{display:none;position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--card);border-top:1px solid var(--line);padding:6px 10px calc(6px + env(safe-area-inset-bottom));justify-content:space-around}
+.bn a,.bn button{background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--mute);padding:4px 16px;border-radius:12px}
+.bn .i{width:22px;height:22px}.bn .on{color:var(--ac)}
+.ad{display:flex;flex-direction:column;align-items:center;gap:4px;margin:18px auto;max-width:100%}
+.ad small{font-size:11px;color:var(--mute);font-weight:600}
+[data-sz]{max-width:100%}
+.slot{border:1.5px dashed var(--ac);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--ac);overflow:hidden;background:repeating-linear-gradient(45deg,transparent 0 10px,color-mix(in srgb,var(--ac) 8%,transparent) 10px 20px)}
+.slot b{font-size:18px}.slot i{font-style:normal;font-size:12px;color:var(--mute);text-align:center;padding:0 6px}
+.d728,.d468,.d320,.m468,.m320{display:none}
+@media(min-width:800px){.d728{display:flex}}
+@media(min-width:520px) and (max-width:799px){.d468{display:flex}}
+@media(max-width:519px){.d320{display:flex}}
+@media(min-width:520px){.m468{display:flex}}@media(max-width:519px){.m320{display:flex}}
+.ad2{display:flex;gap:0;justify-content:center;align-items:flex-start}.ad2 .ad{margin:0 auto}.stick{position:sticky;top:80px}
+.native .art{aspect-ratio:16/10}.native .slot{display:none}
+.anc{display:none;position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));z-index:29;background:var(--card);border-top:1px solid var(--line);justify-content:center}
+.anc .ad{margin:4px auto}.anc button{position:absolute;right:6px;top:6px;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--bg);display:grid;place-items:center;padding:0}
+.anc button .i{width:14px;height:14px}
+@media(max-width:940px){.two{grid-template-columns:1fr}.g3{grid-template-columns:repeat(2,1fr)}.nav{display:none}}
+@media(max-width:620px){.ad2{display:none}.anc{display:flex}.grid,.g3{grid-template-columns:1fr}.cgrid{grid-template-columns:repeat(2,1fr)}.sl{height:340px;border-radius:20px}.sbtn{min-width:0;flex:1}.sbtn span,.sbtn kbd{display:none}.sbtn{width:40px;flex:none;padding:0;justify-content:center}.bn{display:flex}.tx{padding:20px}#so{padding-top:2vh}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3A4 4 0 0011 18.7l1-1"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.7l6.8-4M8.6 13.3l6.8 4"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4a1 1 0 011-1h8l9 9-9 9z"/><circle cx="8" cy="8" r="1.5"/></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M9 12h6M9 16h6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+<symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16zM14 6l3 3"/></symbol>
+<symbol id="i-plane" viewBox="0 0 24 24"><path d="M2 14l20-9-8 17-3-7z"/></symbol>
+<symbol id="i-leaf" viewBox="0 0 24 24"><path d="M5 19C4 10 9 4 20 4c0 11-6 16-15 15zM5 19l8-8"/></symbol>
+<symbol id="i-film" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 4v16M16 4v16M3 9h5M3 15h5M16 9h5M16 15h5"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 20h18M6 16v-5M11 16V6M16 16v-8"/></symbol>
+</defs></svg>
+<a class="skip" href="#app">Skip to content</a>
+<div id="prog"></div>
+<header><div class="w"><div class="bar">
+  <a class="logo" href="#/"><span class="mk"><svg class="i"><use href="#i-arrow"/></svg></span>Northlight</a>
+  <nav class="nav" id="nav"></nav><div class="sp"></div>
+  <button class="sbtn" id="sb" aria-label="Search"><svg class="i"><use href="#i-search"/></svg><span>Search stories…</span><kbd>/</kbd></button>
+  <button class="ib th" aria-label="Toggle dark mode"><svg class="i moon"><use href="#i-moon"/></svg><svg class="i sun"><use href="#i-sun"/></svg></button>
+</div></div></header>
+<div class="w" id="adT"></div>
+<main class="w" id="app" tabindex="-1"></main>
+<div class="w" id="adB"></div>
+<footer><div class="w"><span>© <span id="yr"></span> Northlight Magazine</span><nav class="flinks" aria-label="Footer"><a href="#/about">About</a><a href="#/contact">Contact</a><a href="#/privacy">Privacy Policy</a><a href="#/terms">Terms</a></nav></div></footer>
+<nav class="bn" aria-label="Mobile">
+  <a href="#/" data-k="home"><svg class="i"><use href="#i-home"/></svg>Home</a>
+  <a href="#/categories" data-k="cats"><svg class="i"><use href="#i-grid"/></svg>Topics</a>
+  <button id="sb2"><svg class="i"><use href="#i-search"/></svg>Search</button>
+  <button class="th"><svg class="i moon"><use href="#i-moon"/></svg><svg class="i sun"><use href="#i-sun"/></svg>Theme</button>
+</nav>
+<div class="anc" id="anc"><button id="ancx" aria-label="Close ad"><svg class="i"><use href="#i-close"/></svg></button></div>
+<div id="so" role="dialog" aria-modal="true" aria-label="Search"><div class="sm">
+  <div class="si"><svg class="i"><use href="#i-search"/></svg><input id="sq" autocomplete="off" placeholder="Search titles, topics, tags or any line in a story" aria-label="Search"><button id="sx">Esc</button></div>
+  <div class="sr" id="sr"></div></div></div>
+
+<script>
+/* ##### 1. SITE + ADS CONFIG ##### */
+const SITE={name:"Northlight",tagline:"Stories on technology, design, travel and culture",email:"hello@example.com",
+  /* Thumbnail sizes to upload: post cards 800x500 · slider 1600x800 · article header 1200x600 · small square 200x200 */};
+const AD_OPTIONS={stickyMobile:false}; /* true = closable 320x50 bar above the mobile menu */
+
+/* ##### 2. DATA (posts) — edit freely ##### */
+/* Optional per post: add  img:"images/my-photo.jpg"  as an extra field (16:10, 800x500+) to replace the demo artwork. */
+const CATS={Tech:{k:"cpu",c:["#5b4bff","#8f7bff"]},Design:{k:"pen",c:["#ff5d8f","#ff9a6c"]},Travel:{k:"plane",c:["#0ea5a5","#4ad6b8"]},Lifestyle:{k:"leaf",c:["#3b9c5a","#8fcf5f"]},Culture:{k:"film",c:["#d9480f","#ffb347"]},Business:{k:"chart",c:["#2563eb","#60a5fa"]}};
+const AUTH=["Maya Rahman","Arif Chowdhury","Nusrat Jahan","Tanvir Ahmed"];
+const D=[
+["The quiet web is making a comeback","Tech",["web","writing","trends"],["Personal sites and RSS readers are growing again as people leave the endless feed.","The real appeal of a small website is control over what you read and when.","Writers say a simple page on a free host can build an audience over a few years."]],
+["Typography is the cheapest upgrade for any site","Design",["type","ui","web"],["Most readers judge a page in seconds, and the typeface does most of the talking.","Pick one family for headlines and another for body text, then keep sizes on a scale.","Line length is the quiet hero: aim for fewer than eighty characters per line."]],
+["A slow week in a river city","Travel",["asia","food","boats"],["The day begins on the water, and by six the markets are loud and the ferries are full.","What stays with you is the rhythm, because nothing is rushed and everything gets done.","Bring comfortable shoes, spare time and no fixed plan for the afternoons."]],
+["Building a calm home office in a small room","Lifestyle",["home","focus"],["Face the window if you can, because natural light beats any desk lamp.","Keep the desk clear except for the things you touch every single day.","A good chair is the one purchase worth stretching your budget for."]],
+["Five films that reward a second watch","Culture",["film","review"],["Some films hide their best ideas in the background of ordinary scenes.","A second viewing turns plot into texture and shows the choices behind each shot.","Start with the film you remember least, since it may surprise you most."]],
+["How small shops compete with giant marketplaces","Business",["startups","retail"],["Local shops win on trust, speed and a clear sense of who they serve.","Customers pay more for a product when the story behind it is honest and specific.","A simple email list often beats expensive advertising for a new store."]],
+["What an AI assistant changes in a newsroom","Tech",["ai","media","trends"],["Editors use assistants for transcripts, headline options and first-pass research.","The rule most teams settle on is that a person checks everything before publishing.","The gains are real but modest, mostly from saving time on repetitive work."]],
+["Color systems that work in dark mode","Design",["ui","color","web"],["Dark themes need softer contrast, because pure white on black tires the eyes.","Define colors as tokens so light and dark versions stay in step across the site.","Test every accent color against both backgrounds before you ship it."]],
+["Night trains across the continent","Travel",["trains","europe"],["A sleeper train turns the journey itself into part of the holiday.","Book early for the best cabins and pack light for narrow corridors.","You wake up in a new city without losing a single day of your trip."]],
+["Ten-minute routines that actually stick","Lifestyle",["habits","wellness"],["Small routines survive busy weeks because they take almost no willpower.","Attach a new habit to something you already do, like making coffee.","Track the streak on paper, since a visible chain keeps you honest."]],
+["CSS grid patterns for editorial layouts","Tech",["web","ui","css"],["Grid makes magazine-style layouts short, readable and easy to change.","Use auto-fit with a minimum column width for card walls that adapt by themselves.","Save asymmetry for the hero and keep the rest of the page quiet."]],
+["The return of the indie music scene","Culture",["music","trends"],["Small venues are full again as listeners look for something personal.","Artists now build fans directly through newsletters and short live shows.","The best recommendations still come from friends, not from algorithms."]]
+];
+const FILL=["This is demo text so you can see long-form reading on every screen size.","Replace it with your own writing by editing the data at the top of the script."];
+const P=D.map((t,i)=>({img:"",id:"p"+(i+1),title:t[0],cat:t[1],tags:t[2],lines:t[3],author:AUTH[i%4],d:new Date(Date.now()-i*2.3*864e5).toISOString().slice(0,10),read:4+(i*3)%7,views:9800-i*430,ex:t[3][0]}));
+const TAGS=[...new Set(P.flatMap(p=>p.tags))].sort();
+/* ##### 3. HELPERS ##### */
+const $=s=>document.querySelector(s),app=$('#app');
+const ic=(n,c='')=>`<svg class="i ${c}"><use href="#i-${n}"/></svg>`;
+/* ===== ADS: paste your ad script for each size below. Empty = demo placeholder ===== */
+const AD_CODE={
+ /* "728x90":'<script async src="https://example.com/ad.js"><\/script><ins class="ad-728"></ins>', */
+ "728x90":"","468x60":"","320x50":"","300x250":"","160x600":"","160x300":"","native":""
+};
+const ad=(sz,cls='',where='')=>{const[w,h]=sz.split('x');return `<div class="ad ${cls}"><small>Advertisement</small><div class="slot" data-sz="${sz}" style="width:${w}px;height:${h}px"><b>${w}×${h}</b><i>${where}</i></div></div>`};
+const adR=w=>ad('728x90','d728',w)+ad('468x60','d468',w)+ad('320x50','d320',w);
+const adM=w=>ad('468x60','m468',w)+ad('320x50','m320',w);
+const nat=()=>`<div class="card native"><div data-sz="native" style="display:flex;flex-direction:column;flex:1"><div class="art" style="background:linear-gradient(135deg,#8a8fa8,#b9bdd0)"><svg viewBox="0 0 24 24"><use href="#i-tag"/></svg></div><div class="b"><span><span class="badge" style="background:#8a8fa8">Sponsored</span></span><h3>Native ad headline appears here</h3><p>In-feed slot that looks like a post. Paste a native or recommendation widget script here.</p><div class="meta"><span>Sponsored · Native ad</span></div></div></div></div>`;
+function mountAds(){document.querySelectorAll('[data-sz]:not([data-done])').forEach(s=>{const c=AD_CODE[s.dataset.sz];if(!s.offsetParent||!c)return;s.dataset.done=1;s.replaceChildren(document.createRange().createContextualFragment(c))})}
+const fd=d=>new Date(d).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const col=p=>CATS[p.cat].c,bgc=p=>`background:linear-gradient(135deg,${col(p)[0]},${col(p)[1]})`;
+const art=(p,x='')=>p.img?`<div class="art has-img ${x}" style="${bgc(p)}"><img src="${p.img}" alt="" loading="lazy" decoding="async"></div>`:`<div class="art ${x}" style="${bgc(p)}"><svg viewBox="0 0 24 24"><use href="#i-${CATS[p.cat].k}"/></svg></div>`;
+const meta=p=>`<div class="meta"><span>${p.author}</span><span>${ic('clock')}${p.read} min</span><span>${fd(p.d)}</span></div>`;
+const cardH=p=>`<a class="card" href="#/post/${p.id}">${art(p)}<div class="b"><span><span class="badge" style="background:${col(p)[0]}">${p.cat}</span></span><h3>${p.title}</h3><p>${p.ex}</p>${meta(p)}</div></a>`;
+const rowH=p=>`<a class="row" href="#/post/${p.id}">${art(p)}<div><span class="meta">${p.cat}</span><h4>${p.title}</h4><span class="meta"><span>${ic('eye')}${p.views.toLocaleString()}</span></span></div></a>`;
+const ctile=c=>`<a class="ct" style="background:linear-gradient(135deg,${CATS[c].c[0]},${CATS[c].c[1]})" href="#/category/${c}">${ic(CATS[c].k)}<div>${c}<br><small>${P.filter(p=>p.cat===c).length} stories</small></div></a>`;
+const side=()=>`<aside>${ad('300x250','','Sidebar top')}<div class="box"><h3>Trending</h3>${[...P].sort((a,b)=>b.views-a.views).slice(0,4).map(rowH).join('')}</div>
+<div class="box"><h3>Popular tags</h3><div class="chips">${TAGS.slice(0,14).map(t=>`<a href="#/tag/${t}">${ic('tag')}${t}</a>`).join('')}</div></div><div class="ad2 stick">${ad('160x600','','Sidebar sticky')}${ad('160x300','','Sidebar')}</div></aside>`;
+let shown=4,sIdx=0,timer;
+/* ##### 4. PAGES ##### */
+function home(){const f=P.slice(0,4);
+  app.innerHTML=`<div class="sl" id="sl">${f.map((p,i)=>`<a class="sd ${i?'':'on'}" href="#/post/${p.id}">${art(p)}<div class="tx"><span><span class="badge" style="background:#ffffff33">${p.cat}</span></span><h1>${p.title}</h1>${meta(p)}</div></a>`).join('')}<div class="dots">${f.map((_,i)=>`<button class="${i?'':'on'}" data-i="${i}" aria-label="Slide ${i+1}"></button>`).join('')}</div></div>
+  <div class="h2"><h2>Topics</h2><a href="#/categories">All topics ${ic('arrow')}</a></div><div class="cgrid">${Object.keys(CATS).map(ctile).join('')}</div>
+  <div class="two"><div><div class="h2"><h2>Latest stories</h2></div><div class="grid" id="lg"></div><button class="more" id="mb">Load more</button></div>${side()}</div>`;
+  shown=4;drawn=0;fill();slider(f.length)}
+let drawn=0;
+function fill(){const it=P.slice(4,4+shown);$('#lg').insertAdjacentHTML('beforeend',it.slice(drawn).map((p,k)=>(drawn+k===2?nat():'')+cardH(p)).join(''));drawn=it.length;if(4+shown>=P.length)$('#mb').style.display='none';mountAds()}
+function slider(n){clearInterval(timer);const go=i=>{sIdx=i;document.querySelectorAll('.sd').forEach((e,k)=>e.classList.toggle('on',k===i));document.querySelectorAll('.dots button').forEach((e,k)=>e.classList.toggle('on',k===i))};
+  const still=matchMedia('(prefers-reduced-motion:reduce)').matches;if(!still)timer=setInterval(()=>{if(!document.hidden&&!$('#sl').matches(':hover,:focus-within'))go((sIdx+1)%n)},5000);$('.dots').onclick=e=>{const b=e.target.closest('button');if(b)go(+b.dataset.i)}}
+function list(t,sub,items){app.innerHTML=`<div class="pg"><span class="crumb"><a href="#/">Home</a> / ${sub}</span><h1>${t}</h1><span class="meta">${items.length} ${items.length==1?'story':'stories'}</span></div><div class="two"><div class="grid" style="margin-top:18px">${items.map((p,i)=>(i===2?nat():'')+cardH(p)).join('')||'<p class="meta">No stories found.</p>'}</div>${side()}</div>`}
+function post(id){const p=P.find(x=>x.id===id);if(!p)return location.hash='#/';
+  const rel=P.filter(x=>x.id!==id&&(x.cat===p.cat||x.tags.some(t=>p.tags.includes(t)))).slice(0,2);
+  app.innerHTML=`<article class="post"><span class="crumb"><a href="#/">Home</a> / <a href="#/category/${p.cat}">${p.cat}</a></span><h1>${p.title}</h1>
+  <div class="au"><div class="av">${p.author[0]}</div><div><b>${p.author}</b><div class="meta"><span>${fd(p.d)}</span><span>${ic('clock')}${p.read} min read</span><span>${ic('eye')}${p.views.toLocaleString()}</span></div></div></div>
+  ${art(p,'hd')}<div class="bd">${p.lines.map((t,i)=>`<p>${t}</p>`+(i===0?ad('300x250','','In article · after paragraph 1'):i===2?adM('In article · between paragraphs'):'')).join('')}<p>${FILL.join(' ')}</p></div>
+  <div class="chips">${p.tags.map(t=>`<a href="#/tag/${t}">${ic('tag')}${t}</a>`).join('')}</div>
+  <div class="sh"><button id="cp">${ic('link')}Copy link</button><button id="shr">${ic('share')}Share</button></div>${adR('After article')}</article>
+  <div class="h2"><h2>Related stories</h2></div><div class="grid g3">${rel.map(cardH).join('')+nat()}</div>`;
+  $('#cp').onclick=e=>{navigator.clipboard&&navigator.clipboard.writeText(location.href);e.currentTarget.innerHTML=ic('check')+'Copied'};
+  $('#shr').onclick=()=>navigator.share?navigator.share({title:p.title,url:location.href}):$('#cp').click()}
+function cats(){app.innerHTML=`<div class="pg"><h1>All topics</h1></div><div class="cgrid" style="margin-top:16px">${Object.keys(CATS).map(ctile).join('')}</div><div class="h2"><h2>All tags</h2></div><div class="chips">${TAGS.map(t=>`<a href="#/tag/${t}">${ic('tag')}${t}</a>`).join('')}</div>`}
+const PAGES={
+about:["About",`<p>${SITE.name} is an independent magazine covering technology, design, travel, lifestyle, culture and business. We publish thoughtful, original stories written by people who care about the subject.</p><h2>What we believe</h2><p>Good writing respects the reader's time. We aim to be accurate, clear and useful, and we correct mistakes openly.</p><h2>Advertising</h2><p>Some pages show advertising, which helps pay for the site. Ads are always labeled, and they never influence what we write.</p>`],
+privacy:["Privacy Policy",`<p>Replace this text with your own policy. It should explain what data the site collects, how cookies are used, which advertising and analytics partners you work with, and how visitors can contact you or request removal of their data.</p><h2>Advertising and cookies</h2><p>If you use ad networks, list them here and explain how visitors can opt out of personalized ads.</p>`],
+terms:["Terms of Use",`<p>Replace this text with your own terms. It usually covers acceptable use of the site, ownership of content, limits of liability, and how you may update the terms.</p>`],
+contact:["Contact",`<p>Questions, story ideas or advertising enquiries? Send us a message and we will reply as soon as we can.</p><form class="fm" id="cf"><input name="n" placeholder="Your name" aria-label="Your name" required><input name="e" type="email" placeholder="Your email" aria-label="Your email" required><textarea name="m" placeholder="Your message" aria-label="Your message" required></textarea><button class="more" style="margin:0">Send message</button></form>`]};
+function page(k){const[t,h]=PAGES[k];app.innerHTML=`<div class="page"><span class="crumb"><a href="#/">Home</a> / ${t}</span><h1>${t}</h1>${h}</div>`;
+  const f=$('#cf');if(f)f.onsubmit=e=>{e.preventDefault();const d=new FormData(f);location.href=`mailto:${SITE.email}?subject=${encodeURIComponent('Message from '+d.get('n'))}&body=${encodeURIComponent(d.get('m')+'\n\n'+d.get('e'))}`}}
+let firstRoute=true;
+function seo(title,desc,post){document.title=title;const m=document.querySelector('meta[name=description]');if(m)m.content=desc;
+  const o=document.querySelector('meta[property="og:title"]');if(o)o.content=title;
+  $('#ld').textContent=JSON.stringify(post?{"@context":"https://schema.org","@type":"Article",headline:post.title,datePublished:post.d,author:{"@type":"Person",name:post.author},articleSection:post.cat,keywords:post.tags.join(", ")}:{"@context":"https://schema.org","@type":"WebSite",name:SITE.name})}
+function route(){clearInterval(timer);const [,a,b]=decodeURIComponent(location.hash||'#/').split('/');scrollTo(0,0);let k='home';
+  if(a==='post')post(b),k='';else if(a==='category')list(b,b,P.filter(p=>p.cat===b)),k='cats';else if(a==='tag')list('#'+b,'Tag',P.filter(p=>p.tags.includes(b))),k='cats';
+  else if(a==='categories')cats(),k='cats';else if(PAGES[a])page(a),k='';else home();
+  {const pp=a==='post'?P.find(x=>x.id===b):null,pg=PAGES[a];seo(pp?pp.title+' — '+SITE.name:pg?pg[0]+' — '+SITE.name:SITE.name+' — Magazine',pp?pp.lines[0]:SITE.tagline,pp);if(!firstRoute)app.focus({preventScroll:true});firstRoute=false}
+  document.querySelectorAll('.bn a').forEach(e=>e.classList.toggle('on',e.dataset.k===k));
+  mountAds();$('#nav').innerHTML=`<a href="#/" ${k==='home'?'aria-current="page"':''}>Home</a>`+Object.keys(CATS).slice(0,4).map(c=>`<a href="#/category/${c}" ${a==='category'&&b===c?'aria-current="page"':''}>${c}</a>`).join('')+`<a href="#/categories" ${a==='categories'?'aria-current="page"':''}>More</a>`}
+
+/* ##### 5. SEARCH — ranks by relevance; best match first ##### */
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const rx=s=>s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+function hl(text,words){if(!words.length)return esc(text);return esc(text).replace(new RegExp('('+words.map(w=>rx(esc(w))).join('|')+')','gi'),'<mark>$1</mark>')}
+function score(p,q,words){let s=0,line=null,why='',best=0;const t=p.title.toLowerCase();
+  if(t===q)s+=200;else if(t.startsWith(q))s+=120;else if(t.includes(q))s+=90;
+  words.forEach(w=>{if(t.includes(w))s+=30;if(p.tags.some(x=>x.includes(w)))s+=14;if(p.cat.toLowerCase().includes(w))s+=10});
+  if(s&&!why)why='Title, tag or topic match';
+  p.lines.concat(FILL).forEach(l=>{const L=l.toLowerCase();let ls=L.includes(q)?40:0;words.forEach(w=>{if(L.includes(w))ls+=8});if(ls>best){best=ls;line=l}});
+  if(best){s+=best;if(!why||s-best<30)why='Matched a line in the story'}
+  if(words.length>1&&words.every(w=>(t+' '+p.lines.join(' ').toLowerCase()).includes(w)))s+=25;
+  return{p,s,line:best?line:null,why}}
+function results(v){const q=v.trim().toLowerCase(),box=$('#sr');
+  if(!q){box.innerHTML=`<div class="sg">Browse topics</div><div class="sc">${Object.keys(CATS).map(c=>`<a href="#/category/${c}">${ic(CATS[c].k)}${c}</a>`).join('')}</div><div class="sg">Latest stories</div>${P.slice(0,4).map(hit(null,[])).join('')}`;return}
+  const words=q.split(/\s+/).filter(Boolean);
+  const r=P.map(p=>score(p,q,words)).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+  const cs=Object.keys(CATS).filter(c=>words.some(w=>c.toLowerCase().includes(w)));
+  const ts=TAGS.filter(t=>words.some(w=>t.includes(w))).slice(0,8);
+  let h='';
+  if(cs.length||ts.length)h+=`<div class="sg">Topics and tags</div><div class="sc">${cs.map(c=>`<a href="#/category/${c}">${ic(CATS[c].k)}${hl(c,words)} · ${P.filter(p=>p.cat===c).length}</a>`).join('')}${ts.map(t=>`<a href="#/tag/${t}">${ic('tag')}${hl(t,words)}</a>`).join('')}</div>`;
+  h+=r.length?`<div class="sg">${r.length} ${r.length==1?'story':'stories'} · best match first</div>`+r.slice(0,8).map(x=>hit(x,words)(x.p)).join(''):`<div class="none">${ic('doc')}<p>No stories match “${esc(v)}”. Try a shorter word or browse a topic.</p></div>`;
+  box.innerHTML=h;sel=-1}
+const hit=(x,words)=>p=>`<a class="hit" href="#/post/${p.id}">${art(p)}<div><b>${hl(p.title,words)}</b>${x&&x.line?`<q>“${hl(x.line,words)}”</q>`:`<q>${esc(p.ex)}</q>`}<div class="why">${x?ic('doc')+x.why:ic('clock')+p.read+' min read'}</div></div></a>`;
+let sel=-1;
+let lastFocus=null;
+const open=()=>{lastFocus=document.activeElement;$('#so').classList.add('on');document.body.style.overflow='hidden';const i=$('#sq');i.value='';results('');setTimeout(()=>i.focus(),30)};
+const close=()=>{$('#so').classList.remove('on');document.body.style.overflow='';if(lastFocus&&lastFocus.focus)lastFocus.focus()};
+$('#sb').onclick=open;$('#sb2').onclick=open;$('#sx').onclick=close;
+$('#so').addEventListener('click',e=>{if(e.target.id==='so'||e.target.closest('a.hit,.sc a'))close()});
+$('#sq').addEventListener('input',e=>results(e.target.value));
+document.addEventListener('keydown',e=>{
+  const on=$('#so').classList.contains('on');
+  if(e.key==='Escape'&&on)close();
+  else if(e.key==='/'&&!on&&!/INPUT|TEXTAREA/.test(document.activeElement.tagName)){e.preventDefault();open()}
+  else if(on&&(e.key==='ArrowDown'||e.key==='ArrowUp')){e.preventDefault();const h=[...document.querySelectorAll('.hit')];if(!h.length)return;
+    sel=(sel+(e.key==='ArrowDown'?1:-1)+h.length)%h.length;h.forEach((x,i)=>x.classList.toggle('sel',i===sel));h[sel].scrollIntoView({block:'nearest'})}
+  else if(on&&e.key==='Enter'){const h=document.querySelector('.hit.sel')||document.querySelector('.hit');if(h)h.click()}});
+/* ##### 6. BOOT ##### */
+
+document.addEventListener('click',e=>{if(e.target.id==='mb'){shown+=4;fill()}});
+document.querySelectorAll('.th').forEach(b=>b.onclick=()=>{const d=document.documentElement,n=d.dataset.t==='dark'?'light':'dark';d.dataset.t=n;try{localStorage.setItem('t',n)}catch(e){}});
+try{document.documentElement.dataset.t=localStorage.getItem('t')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')}catch(e){document.documentElement.dataset.t='light'}
+addEventListener('scroll',()=>{const h=document.documentElement;$('#prog').style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight||1)*100)+'%'},{passive:true});
+$('#yr').textContent=new Date().getFullYear();
+$('#adT').innerHTML=adR('Top of page');$('#adB').innerHTML=adR('Above footer');if(AD_OPTIONS.stickyMobile){$('#anc').insertAdjacentHTML('beforeend',ad('320x50','','Mobile sticky'));$('#ancx').onclick=()=>$('#anc').remove()}else $('#anc').remove();
+addEventListener('hashchange',route);addEventListener('resize',()=>mountAds());route();
+</script>
+</body>
+</html>
