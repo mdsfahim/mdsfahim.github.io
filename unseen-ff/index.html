@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unseen FF — Free Fire Drop Zone Tracker & Explorer</title>
+  <meta name="description" content="Track and conquer every drop zone in Free Fire. Bermuda, Purgatory, custom themes, and live traffic analytics. A fast, free drop zone tracker.">
+  <meta name="keywords" content="Free Fire, FF tracker, drop zone, Bermuda, Purgatory, battle royale, map explorer, unseen ff">
+  <meta name="author" content="Unseen FF">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://unseen-ff.msf.pro.bd/">
+  <!-- Open Graph -->
+  <meta property="og:title" content="Unseen FF — Free Fire Drop Zone Tracker">
+  <meta property="og:description" content="Master every drop zone in Free Fire. Download your survival record.">
+  <meta property="og:url" content="https://msf.pro.bd/unseenff">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://unseen-ff.msf.pro.bd/og-preview.jpg">
+  <!-- Font & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ----- GLOBAL & THEME (Professional UI) ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-deep: #0b0c10;
+      --bg-surface: #14161c;
+      --bg-elevated: #1c1f28;
+      --border-subtle: #2a2e3a;
+      --border-highlight: #3e4455;
+      --text-primary: #f0f2f5;
+      --text-secondary: #9aa2b1;
+      --text-muted: #6b7280;
+      --brand-amber: #fbbf24;
+      --brand-amber-dim: #b4820e;
+      --brand-glow: rgba(251, 191, 36, 0.25);
+      --radius-card: 20px;
+      --radius-button: 12px;
+      --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.6);
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --transition: 0.2s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 0 16px 64px;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    /* ----- TYPOGRAPHY & UTILS ----- */
+    h1, h2, h3 {
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+
+    button, input {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      background: none;
+      border: none;
+      outline: none;
+    }
+
+    /* ----- NAVBAR (Professional, clean) ----- */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0 16px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: -0.03em;
+      color: var(--brand-amber);
+      text-transform: uppercase;
+    }
+
+    .logo i {
+      font-size: 1.8rem;
+      filter: drop-shadow(0 0 8px var(--brand-glow));
+    }
+
+    .logo span {
+      color: var(--text-primary);
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-surface);
+      padding: 6px;
+      border-radius: 60px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .tab {
+      padding: 8px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-transform: capitalize;
+    }
+
+    .tab:hover {
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .tab.active {
+      background: var(--brand-amber);
+      color: #0b0c10;
+      box-shadow: 0 4px 14px rgba(251, 191, 36, 0.3);
+      font-weight: 700;
+    }
+
+    /* ----- HERO (Minimal, strong) ----- */
+    .hero {
+      text-align: center;
+      padding: 40px 0 32px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 3.8rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #fff 0%, #fbbf24 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* ----- MAIN LAYOUT (Grid) ----- */
+    .app {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 8px;
+    }
+
+    /* ----- CARD STYLES (Elevated, clean) ----- */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-card);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .card:hover {
+      border-color: var(--border-highlight);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ----- SIDEBAR (Picker) ----- */
+    .picker {
+      position: sticky;
+      top: 24px;
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .picker-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 4px;
+    }
+
+    .picker-head h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .picker-head h2 i {
+      color: var(--brand-amber);
+      font-size: 1rem;
+    }
+
+    .count {
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: var(--brand-amber);
+      color: #0b0c10;
+      padding: 4px 14px;
+      border-radius: 60px;
+      letter-spacing: 0.3px;
+      box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
+    }
+
+    .chips {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+      padding-right: 6px;
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-highlight) transparent;
+    }
+
+    .chips::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    .chips::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chips::-webkit-scrollbar-thumb {
+      background: var(--border-highlight);
+      border-radius: 10px;
+    }
+
+    .chip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--bg-elevated);
+      border: 1px solid transparent;
+      color: var(--text-secondary);
+      width: 100%;
+      text-align: left;
+    }
+
+    .chip:hover {
+      background: #232734;
+      border-color: var(--border-highlight);
+      color: var(--text-primary);
+    }
+
+    .chip[aria-pressed="true"] {
+      background: rgba(251, 191, 36, 0.12);
+      border-color: var(--brand-amber);
+      color: var(--brand-amber);
+      font-weight: 600;
+    }
+
+    .chip[aria-pressed="true"] i {
+      opacity: 1;
+      color: var(--brand-amber);
+    }
+
+    .chip i {
+      opacity: 0.3;
+      font-size: 0.8rem;
+      transition: opacity var(--transition);
+    }
+
+    .chip:hover i {
+      opacity: 0.8;
+    }
+
+    .chip small {
+      font-size: 0.7rem;
+      font-weight: 500;
+      opacity: 0.6;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 40px;
+    }
+
+    /* ----- STAGE (Canvas & Controls) ----- */
+    .stage {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .stage-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .themes {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      background: var(--bg-elevated);
+      padding: 6px 10px;
+      border-radius: 60px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .sw {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: all var(--transition);
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .sw:hover {
+      transform: scale(1.1);
+      z-index: 2;
+    }
+
+    .sw[aria-checked="true"] {
+      border-color: #ffffff;
+      box-shadow: 0 0 0 2px var(--bg-surface), 0 0 0 4px var(--brand-amber);
+    }
+
+    .name-input {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 40px;
+      padding: 12px 20px;
+      width: 240px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: all var(--transition);
+    }
+
+    .name-input::placeholder {
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .name-input:focus {
+      border-color: var(--brand-amber);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+    }
+
+    /* Canvas container */
+    .canvas-wrap {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0a0b0f;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-sm);
+      transition: border-color var(--transition);
+    }
+
+    .canvas-wrap:hover {
+      border-color: var(--border-highlight);
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: crosshair;
+      background: #0a0b0f;
+    }
+
+    .tip {
+      position: absolute;
+      pointer-events: none;
+      background: #0b0c10;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 40px;
+      opacity: 0;
+      transform: translate(-50%, -150%);
+      transition: opacity 0.1s ease;
+      border: 1px solid var(--border-highlight);
+      box-shadow: var(--shadow-sm);
+      white-space: nowrap;
+      letter-spacing: 0.2px;
+      backdrop-filter: blur(8px);
+      background: rgba(11, 12, 16, 0.95);
+    }
+
+    .tip i {
+      color: var(--brand-amber);
+      margin-left: 4px;
+    }
+
+    /* Download section */
+    .dl-title {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dl-title i {
+      color: var(--brand-amber);
+    }
+
+    .dl {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all var(--transition);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .btn i {
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      background: #232734;
+      border-color: var(--border-highlight);
+      transform: translateY(-1px);
+    }
+
+    .btn.primary {
+      background: var(--brand-amber);
+      color: #0b0c10;
+      border-color: var(--brand-amber);
+      box-shadow: 0 6px 18px rgba(251, 191, 36, 0.25);
+      font-weight: 700;
+    }
+
+    .btn.primary:hover {
+      background: #fcd34d;
+      border-color: #fcd34d;
+      box-shadow: 0 8px 24px rgba(251, 191, 36, 0.35);
+    }
+
+    /* ----- FOOTER (Traffic tracker notice) ----- */
+    .footer {
+      margin-top: 48px;
+      padding: 24px 0 8px;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer .badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-surface);
+      padding: 8px 16px;
+      border-radius: 60px;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .footer .badge i {
+      color: var(--brand-amber);
+    }
+
+    .footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .footer a:hover {
+      color: var(--brand-amber);
+    }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 1024px) {
+      .app {
+        grid-template-columns: 320px 1fr;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .picker {
+        position: static;
+        max-height: 400px;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .tabs {
+        justify-content: center;
+      }
+
+      .stage-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .name-input {
+        width: 100%;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .dl {
+        flex-direction: column;
+      }
+
+      .footer {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .card {
+        padding: 18px;
+      }
+
+      .chip {
+        padding: 10px 14px;
+        font-size: 0.85rem;
+      }
+
+      .tab {
+        padding: 6px 16px;
+        font-size: 0.85rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- NAVBAR -->
+    <nav class="nav">
+      <div class="logo">
+        <i class="fas fa-crosshairs"></i>
+        UNSEEN<span>FF</span>
+      </div>
+      <div class="tabs" id="mapTabs">
+        <button class="tab active" data-map="bermuda"><i class="fas fa-map"></i> Bermuda</button>
+        <button class="tab" data-map="purgatory"><i class="fas fa-mountain"></i> Purgatory</button>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <h1 id="heroTitle">Conquer Bermuda</h1>
+      <p>Tap the drop zones you've mastered, choose a theme, and download your survival record.</p>
+    </header>
+
+    <!-- MAIN APP -->
+    <main class="app">
+      <!-- SIDEBAR -->
+      <aside class="card picker">
+        <div class="picker-head">
+          <h2><i class="fas fa-location-dot"></i> Drop Zones</h2>
+          <span class="count" id="count">0 / 20</span>
+        </div>
+        <div class="chips" id="zoneList"></div>
+      </aside>
+
+      <!-- STAGE -->
+      <section class="card stage">
+        <div class="stage-top">
+          <div class="themes" id="themes"></div>
+          <input class="name-input" id="playerName" placeholder="Player Name (Optional)" maxlength="20">
+        </div>
+
+        <div class="canvas-wrap" id="wrap">
+          <canvas id="preview"></canvas>
+          <div class="tip" id="tip"></div>
+        </div>
+
+        <h3 class="dl-title"><i class="fas fa-download"></i> Download Record</h3>
+        <div class="dl">
+          <button class="btn primary" id="dlJpg"><i class="fas fa-file-image"></i> Download JPG</button>
+          <button class="btn" id="dlPng"><i class="fas fa-file-image"></i> Download PNG</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER (Traffic tracking badge) -->
+    <footer class="footer">
+      <div class="badge">
+        <i class="fas fa-chart-line"></i>
+        <span>Live traffic · <span id="visitCount">0</span> visits today</span>
+      </div>
+      <div>
+        <a href="https://unseen-ff.msf.pro.bd/">unseen-ff.msf.pro.bd</a> · © 2025 Unseen FF
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // --- 1. MAP DATA (unchanged) ---
+    const MAP_DATA = {
+      bermuda: {
+        name: "Bermuda",
+        imgSrc: "BERMUDA-NOVA-PEAK.jpg",
+        locs: [
+          { id: "shipyard", name: "Shipyard", x: 400, y: 110, r: 75, tier: "High Loot" },
+          { id: "bullseye", name: "Bullseye", x: 280, y: 170, r: 60, tier: "Standard" },
+          { id: "graveyard", name: "Graveyard", x: 240, y: 285, r: 65, tier: "Standard" },
+          { id: "plantation", name: "Plantation", x: 445, y: 300, r: 60, tier: "Standard" },
+          { id: "riverside", name: "Riverside", x: 605, y: 260, r: 60, tier: "Standard" },
+          { id: "mill", name: "Mill", x: 685, y: 310, r: 65, tier: "Hot Drop" },
+          { id: "katulistiwa", name: "Katulistiwa", x: 375, y: 360, r: 60, tier: "Standard" },
+          { id: "observatory", name: "Observatory", x: 105, y: 400, r: 70, tier: "High Loot" },
+          { id: "bimasakti", name: "Bimasakti Strip", x: 450, y: 465, r: 70, tier: "Hot Drop" },
+          { id: "keraton", name: "Keraton", x: 840, y: 395, r: 60, tier: "Standard" },
+          { id: "peak", name: "Peak", x: 625, y: 545, r: 85, tier: "Hot Drop" },
+          { id: "hangar", name: "Hangar", x: 155, y: 550, r: 70, tier: "High Loot" },
+          { id: "clocktower", name: "Clock Tower", x: 380, y: 565, r: 70, tier: "Hot Drop" },
+          { id: "factory", name: "Factory", x: 445, y: 660, r: 70, tier: "Hot Drop" },
+          { id: "kotatua", name: "Kota Tua", x: 750, y: 610, r: 60, tier: "Standard" },
+          { id: "capetown", name: "Cape Town", x: 875, y: 550, r: 75, tier: "High Loot" },
+          { id: "rimnam", name: "Rim Nam Village", x: 190, y: 775, r: 70, tier: "Standard" },
+          { id: "pochinok", name: "Pochinok", x: 560, y: 760, r: 70, tier: "Hot Drop" },
+          { id: "marselectric", name: "Mars Electric", x: 510, y: 840, r: 75, tier: "High Loot" },
+          { id: "sentosa", name: "Sentosa", x: 865, y: 750, r: 80, tier: "High Loot" }
+        ]
+      },
+      purgatory: {
+        name: "Purgatory",
+        imgSrc: "Purgatory.jpg",
+        locs: [
+          { id: "moathouse", name: "Moathouse", x: 620, y: 125, r: 75, tier: "Hot Drop" },
+          { id: "crossroads", name: "Crossroads", x: 290, y: 175, r: 65, tier: "Standard" },
+          { id: "skilodge", name: "Ski Lodge", x: 865, y: 395, r: 70, tier: "High Loot" },
+          { id: "fields", name: "Fields", x: 605, y: 370, r: 65, tier: "Standard" },
+          { id: "marbleworks", name: "Marbleworks", x: 185, y: 415, r: 80, tier: "High Loot" },
+          { id: "brasilia", name: "Brasilia", x: 525, y: 510, r: 90, tier: "Hot Drop" },
+          { id: "forge", name: "Forge", x: 880, y: 515, r: 65, tier: "Standard" },
+          { id: "quarry", name: "Quarry", x: 130, y: 585, r: 65, tier: "Standard" },
+          { id: "campsite", name: "Campsite", x: 725, y: 615, r: 65, tier: "Standard" },
+          { id: "golfcourse", name: "Golf Course", x: 260, y: 655, r: 70, tier: "Standard" },
+          { id: "mtvilla", name: "Mt. Villa", x: 170, y: 720, r: 60, tier: "Standard" },
+          { id: "central", name: "Central", x: 395, y: 790, r: 70, tier: "High Loot" },
+          { id: "firebrigade", name: "Fire Brigade", x: 530, y: 835, r: 65, tier: "Standard" },
+          { id: "lumbermill", name: "Lumber Mill", x: 730, y: 805, r: 70, tier: "High Loot" }
+        ]
+      }
+    };
+
+    const THEMES = [
+      { id: "booyah", name: "Booyah Gold", bg: "#1a1a24", v1: "#ffaa00", glow: "rgba(255, 170, 0, 0.6)" },
+      { id: "safezone", name: "Safe Zone Blue", bg: "#0d1117", v1: "#00eeff", glow: "rgba(0, 238, 255, 0.6)" },
+      { id: "danger", name: "Danger Red", bg: "#1a0b0b", v1: "#ff2a2a", glow: "rgba(255, 42, 42, 0.6)" }
+    ];
+
+    // --- 2. STATE ---
+    let currentMap = "bermuda";
+    let selectedZones = new Set(JSON.parse(localStorage.getItem('ff_sel_bermuda')) || []);
+    let activeTheme = THEMES[0];
+    let playerName = localStorage.getItem('ff_name') || "";
+
+    // Preload images
+    const loadedImages = {};
+    Object.keys(MAP_DATA).forEach(key => {
+      const img = new Image();
+      img.onload = () => { if (currentMap === key) render(); };
+      img.src = MAP_DATA[key].imgSrc;
+      loadedImages[key] = img;
+    });
+
+    // Canvas setup
+    const PW = 1200, PH = 1600;
+    const MAP_X = 100, MAP_Y = 250, MAP_SIZE = 1000;
+    const cv = document.getElementById("preview");
+    const ctx = cv.getContext("2d");
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = PW * dpr;
+    cv.height = PH * dpr;
+
+    // --- 3. UI INIT ---
+    function initUI() {
+      const themesEl = document.getElementById("themes");
+      themesEl.innerHTML = "";
+      THEMES.forEach(t => {
+        const b = document.createElement("div");
+        b.className = "sw";
+        b.style.background = t.v1;
+        b.setAttribute("aria-checked", t.id === activeTheme.id);
+        b.setAttribute("title", t.name);
+        b.onclick = () => { activeTheme = t; initUI(); render(); };
+        themesEl.appendChild(b);
+      });
+
+      const nameInp = document.getElementById("playerName");
+      nameInp.value = playerName;
+      nameInp.oninput = (e) => { playerName = e.target.value; localStorage.setItem('ff_name', playerName); render(); };
+
+      buildSidebar();
+    }
+
+    function buildSidebar() {
+      const listEl = document.getElementById("zoneList");
+      listEl.innerHTML = "";
+      MAP_DATA[currentMap].locs.forEach(loc => {
+        const btn = document.createElement("button");
+        btn.className = "chip";
+        btn.setAttribute("aria-pressed", selectedZones.has(loc.id));
+        btn.innerHTML = `<span>${loc.name}</span> <small>${loc.tier}</small> <i class="fas ${selectedZones.has(loc.id) ? 'fa-check-circle' : 'fa-circle'}"></i>`;
+        btn.onclick = () => toggleZone(loc.id);
+        listEl.appendChild(btn);
+      });
+      updateCount();
+    }
+
+    function toggleZone(id) {
+      selectedZones.has(id) ? selectedZones.delete(id) : selectedZones.add(id);
+      localStorage.setItem(`ff_sel_${currentMap}`, JSON.stringify(Array.from(selectedZones)));
+      buildSidebar();
+      render();
+      // Simple traffic tracker (local, no Google)
+      trackVisit();
+    }
+
+    function updateCount() {
+      const total = MAP_DATA[currentMap].locs.length;
+      document.getElementById("count").textContent = `${selectedZones.size} / ${total}`;
+    }
+
+    // --- 4. RENDER (Professional canvas drawing) ---
+    function render() {
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      // Background
+      ctx.fillStyle = activeTheme.bg;
+      ctx.fillRect(0, 0, PW, PH);
+
+      // Map image with rounded corners & dimming
+      const img = loadedImages[currentMap];
+      if (img && img.complete) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.roundRect(MAP_X, MAP_Y, MAP_SIZE, MAP_SIZE, 24);
+        ctx.clip();
+        ctx.drawImage(img, MAP_X, MAP_Y, MAP_SIZE, MAP_SIZE);
+
+        // Dim overlay
+        ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+        ctx.fillRect(MAP_X, MAP_Y, MAP_SIZE, MAP_SIZE);
+        ctx.restore();
+      }
+
+      // Draw zones
+      MAP_DATA[currentMap].locs.forEach(loc => {
+        const cx = MAP_X + loc.x;
+        const cy = MAP_Y + loc.y;
+        const isSelected = selectedZones.has(loc.id);
+
+        if (isSelected) {
+          ctx.save();
+          ctx.shadowColor = activeTheme.glow;
+          ctx.shadowBlur = 30;
+
+          const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, loc.r);
+          grad.addColorStop(0, activeTheme.v1);
+          grad.addColorStop(0.4, activeTheme.v1 + "88");
+          grad.addColorStop(1, "transparent");
+
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(cx, cy, loc.r, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 3.5;
+          ctx.stroke();
+          ctx.restore();
+
+          // Label
+          ctx.fillStyle = "#ffffff";
+          ctx.font = `800 20px 'Inter', system-ui`;
+          ctx.textAlign = "center";
+          ctx.shadowColor = "#000";
+          ctx.shadowBlur = 6;
+          ctx.fillText(`✓ ${loc.name.toUpperCase()}`, cx, cy - loc.r - 14);
+        } else {
+          // Unvisited marker
+          ctx.fillStyle = "rgba(255, 255, 255, 0.6)";
+          ctx.beginPath();
+          ctx.arc(cx, cy, 6, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = "rgba(0,0,0,0.5)";
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+      });
+
+      // Header text
+      ctx.fillStyle = activeTheme.v1;
+      ctx.font = `800 24px 'Inter', system-ui`;
+      ctx.textAlign = "left";
+      ctx.fillText("FREE FIRE EXPLORATION RECORD", 80, 100);
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `800 64px 'Inter', system-ui`;
+      const titleText = playerName ? `${playerName.toUpperCase()}'S ${MAP_DATA[currentMap].name.toUpperCase()}` : `MY ${MAP_DATA[currentMap].name.toUpperCase()}`;
+      ctx.fillText(titleText, 80, 170);
+
+      // Big counter
+      ctx.textAlign = "right";
+      ctx.font = `800 96px 'Inter', system-ui`;
+      ctx.fillStyle = activeTheme.v1;
+      ctx.fillText(selectedZones.size, PW - 150, 170);
+      ctx.fillStyle = "#8b8b9e";
+      ctx.font = `700 40px 'Inter', system-ui`;
+      ctx.fillText(` / ${MAP_DATA[currentMap].locs.length}`, PW - 80, 170);
+
+      // Footer stats
+      const pct = Math.round((selectedZones.size / MAP_DATA[currentMap].locs.length) * 100);
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#38384d";
+      ctx.beginPath(); ctx.roundRect(80, PH - 140, PW - 160, 12, 6); ctx.fill();
+
+      if (pct > 0) {
+        ctx.fillStyle = activeTheme.v1;
+        ctx.beginPath(); ctx.roundRect(80, PH - 140, Math.max(12, (PW - 160) * (pct / 100)), 12, 6); ctx.fill();
+      }
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = `700 28px 'Inter', system-ui`;
+      ctx.fillText(`${pct}% OF MAP CONQUERED`, 80, PH - 80);
+
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#8b8b9e";
+      ctx.font = `600 22px 'Inter', system-ui`;
+      ctx.fillText(`${selectedZones.size} Drop Zones Mastered`, PW - 80, PH - 80);
+
+      ctx.restore();
+    }
+
+    // --- 5. INTERACTIONS ---
+    document.getElementById("mapTabs").addEventListener("click", e => {
+      const tab = e.target.closest(".tab");
+      if (!tab) return;
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      currentMap = tab.dataset.map;
+      document.getElementById("heroTitle").textContent = `Conquer ${MAP_DATA[currentMap].name}`;
+      selectedZones = new Set(JSON.parse(localStorage.getItem(`ff_sel_${currentMap}`)) || []);
+      initUI();
+      render();
+      trackVisit();
+    });
+
+    const tip = document.getElementById("tip");
+    const wrap = document.getElementById("wrap");
+
+    function getHoveredLocation(e) {
+      const rect = cv.getBoundingClientRect();
+      const scaleX = PW / rect.width;
+      const scaleY = PH / rect.height;
+      const clickX = (e.clientX - rect.left) * scaleX;
+      const clickY = (e.clientY - rect.top) * scaleY;
+      for (const loc of MAP_DATA[currentMap].locs) {
+        const cx = MAP_X + loc.x;
+        const cy = MAP_Y + loc.y;
+        if (Math.hypot(clickX - cx, clickY - cy) <= loc.r) return loc;
+      }
+      return null;
+    }
+
+    cv.addEventListener("mousemove", e => {
+      const loc = getHoveredLocation(e);
+      if (loc) {
+        cv.style.cursor = "pointer";
+        const wrapRect = wrap.getBoundingClientRect();
+        tip.style.left = (e.clientX - wrapRect.left) + "px";
+        tip.style.top = (e.clientY - wrapRect.top) + "px";
+        tip.innerHTML = `${loc.name} ${selectedZones.has(loc.id) ? '<i class="fas fa-check-circle"></i>' : ''}`;
+        tip.style.opacity = 1;
+      } else {
+        cv.style.cursor = "crosshair";
+        tip.style.opacity = 0;
+      }
+    });
+
+    cv.addEventListener("mouseleave", () => tip.style.opacity = 0);
+    cv.addEventListener("click", e => {
+      const loc = getHoveredLocation(e);
+      if (loc) toggleZone(loc.id);
+    });
+
+    // Downloads
+    function downloadCanvas(ext) {
+      const link = document.createElement('a');
+      link.download = `UnseenFF-${MAP_DATA[currentMap].name}-Record.${ext}`;
+      link.href = cv.toDataURL(`image/${ext === 'jpg' ? 'jpeg' : 'png'}`, 0.95);
+      link.click();
+      trackVisit();
+    }
+    document.getElementById("dlJpg").onclick = () => downloadCanvas('jpg');
+    document.getElementById("dlPng").onclick = () => downloadCanvas('png');
+
+    // --- 6. TRAFFIC TRACKER (Local, lightweight, no Google) ---
+    function trackVisit() {
+      let visits = localStorage.getItem('ff_visits');
+      let lastDate = localStorage.getItem('ff_last_date');
+      const today = new Date().toDateString();
+
+      if (lastDate !== today) {
+        visits = 0;
+        localStorage.setItem('ff_last_date', today);
+      }
+      visits = (parseInt(visits) || 0) + 1;
+      localStorage.setItem('ff_visits', visits);
+      document.getElementById('visitCount').textContent = visits;
+    }
+
+    // Initialize traffic counter display
+    (function initTraffic() {
+      const today = new Date().toDateString();
+      const lastDate = localStorage.getItem('ff_last_date');
+      if (lastDate !== today) {
+        localStorage.setItem('ff_last_date', today);
+        localStorage.setItem('ff_visits', 0);
+      }
+      document.getElementById('visitCount').textContent = localStorage.getItem('ff_visits') || 0;
+    })();
+
+    // --- 7. SEO structured data (JSON-LD) ---
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Unseen FF — Free Fire Drop Zone Tracker",
+      "url": "https://unseen-ff.msf.pro.bd/",
+      "description": "Track and conquer every drop zone in Free Fire. Bermuda, Purgatory, custom themes, and live traffic analytics.",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    });
+    document.head.appendChild(script);
+
+    // --- INIT ---
+    initUI();
+    render();
+    trackVisit();
+  </script>
+<script data-goatcounter="https://unseenff.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
